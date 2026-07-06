@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import ProductGrid from "../components/ProductGrid";
-function Home({ search }) {
+function Home({ search, onAddToCart }) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -33,7 +33,7 @@ function Home({ search }) {
   }
   return (
     <div>
-      <ProductGrid products={filteredProducts} />
+      <ProductGrid products={filteredProducts} onAddToCart={onAddToCart}/>
     </div>
   );
 }

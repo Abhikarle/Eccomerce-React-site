@@ -1,7 +1,6 @@
-import { useState } from 'react';
 import logo from '../assets/logo.svg';
 import { Link } from 'react-router-dom';
-function Navbar({search, setSearch}) {
+function Navbar({search, setSearch, cartItems}) {
   return (
     <nav className="flex justify-between items-center bg-gray-400 text-white shadow-md px-8 py-4">
       <div className="flex items-center gap-2">
@@ -13,7 +12,7 @@ function Navbar({search, setSearch}) {
       </div>
       <div className="flex items-center gap-6">
           <Link to="/">Home</Link>
-          <Link to="/cart">Cart</Link>
+          <Link to="/cart">Cart({cartItems.length})</Link>
         <button onClick={() => alert('Login functionality not implemented yet.')}>🌙</button>
       </div>
     </nav>
