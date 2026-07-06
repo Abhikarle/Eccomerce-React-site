@@ -5,7 +5,6 @@ function ProductCard({ product }) {
         <div className="flex justify-center">
            <img src={product.image} alt={product.title} width={200} />
         </div>
-
           <h2 className="font-semibold line-clamp-2">{product.title}</h2>
           <p className='font-bold'>${product.price}</p>
           <p>{product.category}</p>

@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import ProductGrid from "../components/ProductGrid";
-function Home() {
+function Home({ search }) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const filteredProducts = products.filter(product => product.title.toLowerCase().includes(search.toLowerCase()));
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -32,7 +33,7 @@ function Home() {
   }
   return (
     <div>
-      <ProductGrid products={products} />
+      <ProductGrid products={filteredProducts} />
     </div>
   );
 }

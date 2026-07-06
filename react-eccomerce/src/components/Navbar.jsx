@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import logo from '../assets/logo.svg';
 import { Link } from 'react-router-dom';
-function Navbar() {
-  const [search, setSearch] = useState('');
+function Navbar({search, setSearch}) {
   return (
     <nav className="flex justify-between items-center bg-gray-400 text-white shadow-md px-8 py-4">
       <div className="flex items-center gap-2">
