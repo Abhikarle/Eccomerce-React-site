@@ -23,12 +23,15 @@ function App() {
       return updatedCartItems;
     });
   };
+  const removeFromCart = (id) => {
+    setCartItems(prevItems => prevItems.filter(item => item.id !== id));
+  };
   return (
     <>
       <Navbar search={search} setSearch={setSearch} cartItems={cartItems}/>
       <Routes>
-        <Route path="/" element={<Home search={search} onAddToCart={ addToCart} />} />
-        <Route path="/cart" element={<Cart cartItems={cartItems}/>} />
+        <Route path="/" element={<Home search={search} onAddToCart={ addToCart} removeFromCart={removeFromCart}/>} />
+        <Route path="/cart" element={<Cart cartItems={cartItems} removeFromCart={removeFromCart}/>} />
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="*" element={<h1>404 Not Found</h1>} />
       </Routes>
