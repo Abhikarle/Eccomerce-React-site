@@ -9,18 +9,20 @@ function App() {
   const [search, setSearch] = useState("");
   const [cartItems, setCartItems] = useState([]);
   const addToCart = (product) => {
-    setCartItems(prevItems => [...prevItems, product]);
-    if (product) {
-      alert(`${product.title} has been added to the cart!`);
-      const existingItem = cartItems.find(item => item.id === product.id);
-      const updatedCartItems = cartItems.map(item => {
+    setCartItems(prevItems => {
+      const existingItem = prevItems.find(item => item.id === product.id);
+      if (!existingItem) {
+        return [...prevItems, { ...product, quantity: 1 }];
+      }
+      const updatedCartItems = prevItems.map(item => {
         if (item.id === product.id) {
-          return{...item, quantity: item.quantity + 1}
+          return { ...item, quantity: item.quantity + 1 }
         }
         return item;
       })
-    }
-  }
+      return updatedCartItems;
+    });
+  };
   return (
     <>
       <Navbar search={search} setSearch={setSearch} cartItems={cartItems}/>
