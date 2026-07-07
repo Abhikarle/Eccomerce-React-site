@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import './App.css'
 import Navbar from './components/Navbar'
@@ -7,7 +7,13 @@ import Home from './pages/Home'
 import ProductDetails from './pages/ProductDetails'
 function App() {
   const [search, setSearch] = useState("");
-  const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState(() => {
+  const savedCartItems = JSON.parse(localStorage.getItem("cartItems"));
+  return savedCartItems || [];
+  });
+   useEffect(() => {
+  localStorage.setItem("cartItems", JSON.stringify(cartItems));
+}, [cartItems]);
   const addToCart = (product) => {
     setCartItems(prevItems => {
       const existingItem = prevItems.find(item => item.id === product.id);
@@ -56,6 +62,7 @@ function App() {
   const totalItems = cartItems.reduce((total, item) => {
     return total + item.quantity;
   }, 0);
+
   return (
     <>
       <Navbar search={search} setSearch={setSearch} cartItems={cartItems}/>
