@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 function ProductDetails({ onAddToCart }) {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
@@ -18,7 +18,12 @@ function ProductDetails({ onAddToCart }) {
         const data = await response.json();
         console.log(data);
         setProduct(data);
-        
+        const relatedResponse = await fetch(`https://dummyjson.com/products/category/${data.category}`);
+        const relatedData = await relatedResponse.json();
+        const filteredRelatedProducts = relatedData.products.filter(
+            item => item.id !== data.id
+        );
+        setRelatedProducts(filteredRelatedProducts);
         setSelectedImage(data.thumbnail);
       } catch (error) {
         setError(error.message);
@@ -42,8 +47,9 @@ function ProductDetails({ onAddToCart }) {
   const originalPrice = (product.price / (1 - product.discountPercentage / 100)).toFixed(2);
   const rating = Math.round(product.rating);
   return (
-    <div className='max-w-7xl mx-auto p-6 grid md:grid-cols-2 gap-10'>
-      {/* Left Side */}
+    <>
+      <div className='max-w-7xl mx-auto p-6 grid md:grid-cols-2 gap-10'>
+        {/* Left Side */}
       <div>
         <img src={selectedImage} alt={product.title} className='h-96 w-full object-contain transition-all duration-300' />
         {/* Images Gallery */}
@@ -61,12 +67,10 @@ function ProductDetails({ onAddToCart }) {
           <span className=' text-white bg-red-500 px-2 py-1 font-semibold rounded-full'>{product.discountPercentage}% OFF</span>
         </div>
         <div className='flex'>
-          {Array.from({ length: 5 }).map((key, index) => {
-            if (index < rating) {
-              return <p>⭐</p>;
-            } else {
-              return <p>☆</p>;
-            }
+          {Array.from({ length: 5 }).map((index) => {
+            <span key={index}>
+              {index < rating ? "⭐" : "☆"}
+            </span>
           })}
         </div>
         <p>
@@ -121,9 +125,35 @@ function ProductDetails({ onAddToCart }) {
           console.log(product)
           console.log(quantity)
           onAddToCart({ ...product, quantity })
-        }}>🛍 Add to Cart</button>
+          }}
+          >
+            🛍 Add to Cart
+          </button>
+        </div>
+        </div>
+      <div className='max-w-7xl mx-auto p-7'>
+        <h2 className='text-2xl font-bold mt-10 mb-5'>
+          Related  Products
+        </h2>
+       <div className='grid grid-cols-2 md:grid-cols-4 gap-5'>
+        {relatedProducts.map((item) => {
+          return (
+          <Link key={item.id} to={`/product/${item.id}`} className="border rounded-lg p-4 shadow hover:shadow-xl hover:-translate-y-1 transition duration-300 block h-full">
+            <img
+              src={item.thumbnail}
+              alt={item.title}
+              className='h-40 w-full object-contain mx-auto'/>
+            <h3 className='font-semibold mt-2 line-clamp-2'>
+              {item.title}
+            </h3>
+            <p className='text-orange-500 font-bold'>
+              ${item.price}
+            </p>
+          </Link>
+        )})}
       </div>
-    </div>
-  )
+      </div>
+     </>
+  );
 }
 export default ProductDetails
