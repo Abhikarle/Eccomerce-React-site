@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-function ProductDetails({ onAddToCart }) {
+function ProductDetails({ onAddToCart, wishlist, setWishlist }) {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [error, setError] = useState(null);
@@ -34,7 +34,6 @@ function ProductDetails({ onAddToCart }) {
     };
     fetchProductDetails();
   }, [id]);
-
   if (loading) {
     return <h2>Loading....</h2>
   }
@@ -46,6 +45,18 @@ function ProductDetails({ onAddToCart }) {
   }
   const originalPrice = (product.price / (1 - product.discountPercentage / 100)).toFixed(2);
   const rating = Math.round(product.rating);
+  const isWishlisted = wishlist.some(
+  item => item.id === product.id
+  );
+  const toggleWishlist = () => {
+    if (isWishlisted) {
+      const updatedWishlist = wishlist.filter(item => item.id !== product.id);
+      setWishlist(updatedWishlist);
+    } else {
+      const updatedWishlist = [...wishlist, product];
+      setWishlist(updatedWishlist);
+    }
+  };
   return (
     <>
       <div className='max-w-7xl mx-auto px-5 pt-6'>
@@ -115,7 +126,7 @@ function ProductDetails({ onAddToCart }) {
             const reviewRating = Math.round(review.rating);
             const reviewDate = new Date(review.date);
           return(
-            <div key={index} >
+            <div key={index} className=''>
               {Array.from({ length: 5 }).map((index) => {
                 return (
                 <span key={index}>
@@ -158,6 +169,7 @@ function ProductDetails({ onAddToCart }) {
           >
             🛍 Add to Cart
           </button>
+          <button onClick={toggleWishlist}>{!isWishlisted ? '🤍 Add to Wishlist' : '❤️ Remove from Wishlist'}</button>
         </div>
         </div>
       <div className='max-w-7xl mx-auto p-7'>

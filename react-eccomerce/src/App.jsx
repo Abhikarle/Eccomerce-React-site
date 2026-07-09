@@ -11,9 +11,16 @@ function App() {
   const savedCartItems = JSON.parse(localStorage.getItem("cartItems"));
   return savedCartItems || [];
   });
+  const [wishlist, setWishlist] = useState(() => {
+    const savedWishlist = JSON.parse(localStorage.getItem('wishlist'));
+    return savedWishlist || [];
+  });
    useEffect(() => {
   localStorage.setItem("cartItems", JSON.stringify(cartItems));
    }, [cartItems]);
+  useEffect(() => {
+    localStorage.setItem('wishlist', JSON.stringify(wishlist));
+  }, [wishlist]);
   useEffect(() => {
     console.log("Cart Items:", cartItems);
   }, [cartItems]);
@@ -72,7 +79,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home search={search} onAddToCart={addToCart} removeFromCart={removeFromCart}/>} />
         <Route path="/cart" element={<Cart cartItems={cartItems} removeFromCart={removeFromCart} increaseQuantity={increaseQuantity} decreaseQuantity={decreaseQuantity} totalItems={totalItems} totalPrice={totalPrice}/>} />
-        <Route path="/product/:id" element={<ProductDetails onAddToCart={addToCart} />} />
+        <Route path="/product/:id" element={<ProductDetails onAddToCart={addToCart} wishlist={wishlist} setWishlist={setWishlist} />} />
         <Route path="*" element={<h1>404 Not Found</h1>} />
       </Routes>
     </>
