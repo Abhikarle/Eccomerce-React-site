@@ -48,6 +48,15 @@ function ProductDetails({ onAddToCart }) {
   const rating = Math.round(product.rating);
   return (
     <>
+      <div className='max-w-7xl mx-auto px-5 pt-6'>
+        <Link to='/' className='text-blue-500 hover:underline'>
+          Home
+        </Link>
+        <span className='mx-2'> &gt; </span>
+        <span className='text-gray-700 capitalize'>{product.category}</span>
+        <span className='mx-2'>&gt;</span>
+        <span className='font-semibold'>{product.title}</span>
+      </div>
       <div className='max-w-7xl mx-auto p-6 grid md:grid-cols-2 gap-10'>
         {/* Left Side */}
       <div>
@@ -95,11 +104,31 @@ function ProductDetails({ onAddToCart }) {
           </p>
         )}
         <p><span className="font-semibold">SKU: </span>{product.sku}</p>
+
         <div className='flex flex-wrap gap-3'>
           {product.tags.map((tag) => (
               <span key={tag} className='bg-gray-300 px-3 py-2 rounded-full font-semibold text-sm'>{tag}</span>
           ))}
-        </div>
+          </div>
+         <h3 className='font-bold mt-8 mb-4 text-2xl '>Customer Reviews</h3>
+          {product.reviews.map((review, index) => {
+            const reviewRating = Math.round(review.rating);
+            const reviewDate = new Date(review.date);
+          return(
+            <div key={index} >
+              {Array.from({ length: 5 }).map((index) => {
+                return (
+                <span key={index}>
+                  {index < reviewRating ? "⭐" : "☆"}
+                </span>
+              )})}
+              <h3 className='font-semibold'>{review.reviewerName}</h3>
+              <p className='text-gray-700'>{review.comment}</p>
+              <p>
+                {reviewDate.toLocaleDateString()}
+              </p>
+            </div>
+          )})}
         <div className="flex items-center gap-3 mt-3">
             {/* Decrease Quantity */}
             <button disabled={quantity === 1} className={`w-10 h-10 rounded ${
