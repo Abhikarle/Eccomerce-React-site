@@ -161,15 +161,12 @@ function ProductDetails({ onAddToCart, wishlist, setWishlist }) {
             </button>
           </div>
         <button className='w-full mt-5 bg-indigo-700 text-white py-2 rounded-lg hover:bg-black' onClick={() => {
-          console.log('Button Clicked')
-          console.log(product)
-          console.log(quantity)
           onAddToCart({ ...product, quantity })
           }}
           >
             🛍 Add to Cart
           </button>
-          <button onClick={toggleWishlist}>{!isWishlisted ? '🤍 Add to Wishlist' : '❤️ Remove from Wishlist'}</button>
+          <button onClick={toggleWishlist}>{isWishlisted ? '❤️ Remove from Wishlist' : '🤍 Add to Wishlist'}</button>
         </div>
         </div>
       <div className='max-w-7xl mx-auto p-7'>

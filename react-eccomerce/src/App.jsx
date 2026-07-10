@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react'
 import { Route, Routes } from 'react-router-dom'
+import Toast from './components/Toast'
 import './App.css'
 import Navbar from './components/Navbar'
 import Cart from './pages/Cart'
 import Home from './pages/Home'
 import ProductDetails from './pages/ProductDetails'
+import Wishlist from './pages/Wishlist'
 function App() {
   const [search, setSearch] = useState("");
   const [cartItems, setCartItems] = useState(() => {
@@ -12,9 +14,10 @@ function App() {
   return savedCartItems || [];
   });
   const [wishlist, setWishlist] = useState(() => {
-    const savedWishlist = JSON.parse(localStorage.getItem('wishlist'));
-    return savedWishlist || [];
+    const savedWishlist = localStorage.getItem('wishlist');
+    return savedWishlist ? JSON.parse(savedWishlist) : [];
   });
+  const [toast, setToast] = useState("");
    useEffect(() => {
   localStorage.setItem("cartItems", JSON.stringify(cartItems));
    }, [cartItems]);
@@ -38,6 +41,16 @@ function App() {
       })
       return updatedCartItems;
     });
+    setToast({
+      message: "✅ Product added to cart!",
+      type: "success"
+    });
+    setTimeout(() => {
+      setToast({
+        message: '',
+        type: ''
+      });
+    }, 4000);
   };
   const removeFromCart = (id) => {
     setCartItems(prevItems => prevItems.filter(item => item.id !== id));
@@ -75,11 +88,13 @@ function App() {
 
   return (
     <>
-      <Navbar search={search} setSearch={setSearch} cartItems={cartItems}/>
+      <Navbar search={search} setSearch={setSearch} cartItems={cartItems} wishlist={wishlist} />
+      {toast.message && ( <Toast message={toast.message} type={toast.type} />)}
       <Routes>
         <Route path="/" element={<Home search={search} onAddToCart={addToCart} removeFromCart={removeFromCart}/>} />
         <Route path="/cart" element={<Cart cartItems={cartItems} removeFromCart={removeFromCart} increaseQuantity={increaseQuantity} decreaseQuantity={decreaseQuantity} totalItems={totalItems} totalPrice={totalPrice}/>} />
         <Route path="/product/:id" element={<ProductDetails onAddToCart={addToCart} wishlist={wishlist} setWishlist={setWishlist} />} />
+        <Route path='/wishlist' element={<Wishlist wishlist={wishlist} setWishlist={setWishlist} onAddToCart={addToCart} />} />
         <Route path="*" element={<h1>404 Not Found</h1>} />
       </Routes>
     </>
