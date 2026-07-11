@@ -8,6 +8,7 @@ import Home from './pages/Home'
 import ProductDetails from './pages/ProductDetails'
 import Wishlist from './pages/Wishlist'
 import Checkout from './pages/Checkout'
+import OrderSuccess from './pages/OrderSuccess'
 function App() {
   const [search, setSearch] = useState("");
   const [cartItems, setCartItems] = useState(() => {
@@ -67,6 +68,22 @@ function App() {
       },300);
     },4000);
   };
+  const showToastMessage = (message, type) => {
+  setToast({
+    message,
+    type,
+  });
+
+  setShowToast(true);
+
+  if (toastTimer.current) {
+    clearTimeout(toastTimer.current);
+  }
+
+  toastTimer.current = setTimeout(() => {
+    setShowToast(false);
+  }, 4000);
+};
   const removeFromCart = (id) => {
     setCartItems(prevItems => prevItems.filter(item => item.id !== id));
   };
@@ -100,7 +117,9 @@ function App() {
   const totalItems = cartItems.reduce((total, item) => {
     return total + item.quantity;
   }, 0);
-
+  const clearCart = () => {
+    setCartItems([]);
+  }
   return (
     <>
       <Navbar search={search} setSearch={setSearch} cartItems={cartItems} wishlist={wishlist} />
@@ -108,9 +127,10 @@ function App() {
       <Routes>
         <Route path="/" element={<Home search={search} onAddToCart={addToCart} removeFromCart={removeFromCart}/>} />
         <Route path="/cart" element={<Cart cartItems={cartItems} removeFromCart={removeFromCart} increaseQuantity={increaseQuantity} decreaseQuantity={decreaseQuantity} totalItems={totalItems} totalPrice={totalPrice} />} />
-        <Route path='/checkout' element={<Checkout cartItems={cartItems} totalItems={totalItems} totalPrice={totalPrice} />} />
+        <Route path='/checkout' element={<Checkout cartItems={cartItems} totalItems={totalItems} totalPrice={totalPrice} showToastMessage={showToastMessage} clearCart={clearCart} />} />
         <Route path="/product/:id" element={<ProductDetails onAddToCart={addToCart} wishlist={wishlist} setWishlist={setWishlist} />} />
         <Route path='/wishlist' element={<Wishlist wishlist={wishlist} setWishlist={setWishlist} onAddToCart={addToCart} />} />
+        <Route path='/order-success' element={<OrderSuccess totalItems={totalItems} totalPrice={totalPrice} />} />
         <Route path="*" element={<h1>404 Not Found</h1>} />
       </Routes>
     </>

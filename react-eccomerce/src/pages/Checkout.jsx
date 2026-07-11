@@ -1,14 +1,179 @@
-function Checkout({cartItems, totalItems, totalPrice}) {
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+function Checkout({ cartItems, totalItems, totalPrice, showToastMessage, clearCart }) {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
+    city: "",
+    pincode: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+  const fields = [
+    {
+      name: "name",
+      label: "Full Name",
+      type: "text",
+      placeholder: "Enter your full name",
+    },
+    {
+      name: "email",
+      label: "Email",
+      type: "email",
+      placeholder: "Enter your email",
+    },
+    {
+      name: "phone",
+      label: "Phone",
+      type: "tel",
+      placeholder: "Enter your phone number",
+    },
+    {
+      name: "city",
+      label: "City",
+      type: "text",
+      placeholder: "Enter your city",
+    },
+    {
+      name: "pincode",
+      label: "Pincode",
+      type: "number",
+      placeholder: "Enter your pincode",
+    },
+  ];
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const phoneRegex = /^\d{10}$/;
+  const handlePlaceOrder = () => {
+   const emptyField = fields.find(
+      (field) => !formData[field.name]
+   );
+    if (emptyField) {
+      showToastMessage(
+        `${emptyField.label} is required`,
+        "error"
+      );
+      return;
+    }
+    if (!emailRegex.test(formData.email)) {
+        showToastMessage(
+      "Please Enter valid email address.",
+      "error"
+      );
+      return;
+    }
+
+    if (!phoneRegex.test(formData.phone)) {
+      // show phone error toast
+        showToastMessage(
+      "Please Enter valid phone number.",
+      "error"
+      );
+      return;
+    }
+    setLoading(true);
+     setTimeout(() => {
+    setLoading(false);
+    const orderData = {
+      totalItems,
+      totalPrice,
+      };
+
+      clearCart();
+
+    showToastMessage(
+    "🎉 Order placed successfully!",
+    "success"
+    );
+    navigate('/order-success', {
+      state: orderData,
+    });
+  }, 3000);
+  }
   return (
     <div className='max-w-7xl mx-auto p-6'>
       <h1 className='text-4xl font-bold mb-8'>Checkout</h1>
-      <div className='flex gap-8'>
-        <div className='flex-1 bg-white rounded-xl shadow-md p-6'>
-          <h2>Shipping Information</h2>
+      <div className='flex flex-col lg:flex-row gap-8'>
+      <div className="flex-1 bg-white rounded-xl shadow-md p-6">
+      { fields.map((field) => (
+          <div key={field.name} className="mb-5">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              {field.label}
+            </label>
 
+            <input
+              type={field.type}
+              name={field.name}
+              value={formData[field.name]}
+              onChange={handleChange}
+              placeholder={field.placeholder}
+              className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+        ))
+      }
+        <div className="mb-5">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Address
+            </label>
+
+            <textarea
+              name="address"
+              rows="4"
+              value={formData.address}
+              onChange={handleChange}
+              placeholder="Enter your address"
+              className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
         </div>
-        <div className='w-96'>
-            <h3>Order Summary</h3>
+      </div>
+        <div className="w-96 bg-white rounded-xl shadow-md p-6">
+          <h2 className='text-2xl font-bold mb-6'>Order Summary</h2>
+          {cartItems.map((item) => (
+            <div
+              key={item.id}
+              className='flex gap-4 border-b border-gray-200 py-4 last:border-b-0'>
+              <img src={item.thumbnail} alt={item.title} className='w-20 h-20 object-cover rounded-lg border shrink-0' />
+              <div className='flex-1'>
+                <h3 className="font-semibold line-clamp-2">
+                  {item.title}
+                </h3>
+
+                <p className="text-sm text-gray-500">
+                  Qty: {item.quantity}
+                </p>
+
+                <p className="font-bold text-lg">
+                  ${item.price * item.quantity}
+                </p>
+              </div>
+            </div>
+          ))}
+          <div className='mt-6 pt-6 border-t'>
+            <div className='flex justify-between font-semibold mt-2'>
+              <span>Total Items:</span>
+              <span>{totalItems}</span>
+            </div>
+            <div className='flex justify-between text-xl font-bold mt-2'>
+              <span>Total Price:</span>
+              <span>${totalPrice.toFixed(2)}</span>
+            </div>
+            <button
+              onClick={handlePlaceOrder}
+              disabled={loading}
+
+              className={`w-full mt-6 text-white py-3 rounded-lg transition ${loading ? "bg-gray-400 cursor-not-allowed opacity-70" : "bg-blue-600 hover:bg-blue-800"}`}
+            >
+              {loading ? 'Processing...' : 'Place Order'}
+            </button>
+          </div>
         </div>
       </div>
     </div>
