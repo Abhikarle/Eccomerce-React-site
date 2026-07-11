@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import Toast from './components/Toast'
 import './App.css'
@@ -7,6 +7,7 @@ import Cart from './pages/Cart'
 import Home from './pages/Home'
 import ProductDetails from './pages/ProductDetails'
 import Wishlist from './pages/Wishlist'
+import Checkout from './pages/Checkout'
 function App() {
   const [search, setSearch] = useState("");
   const [cartItems, setCartItems] = useState(() => {
@@ -17,7 +18,12 @@ function App() {
     const savedWishlist = localStorage.getItem('wishlist');
     return savedWishlist ? JSON.parse(savedWishlist) : [];
   });
-  const [toast, setToast] = useState("");
+  const [toast, setToast] = useState({
+    message: "",
+    type: ""
+  });
+  const [showToast, setShowToast] = useState(false);
+  const toastTimer = useRef(null);
    useEffect(() => {
   localStorage.setItem("cartItems", JSON.stringify(cartItems));
    }, [cartItems]);
@@ -33,24 +39,33 @@ function App() {
       if (!existingItem) {
         return [...prevItems, { ...product, quantity: product.quantity || 1 }];
       }
-      const updatedCartItems = prevItems.map(item => {
-        if (item.id === product.id) {
-          return { ...item, quantity: item.quantity + (product.quantity || 1) }
-        }
-        return item;
-      })
-      return updatedCartItems;
+      return prevItems.map(item =>
+        item.id === product.id
+          ? {
+            ...item,
+            quantity: item.quantity + (product.quantity || 1)
+          }
+          : item
+      );
     });
     setToast({
       message: "✅ Product added to cart!",
       type: "success"
     });
-    setTimeout(() => {
-      setToast({
-        message: '',
-        type: ''
-      });
-    }, 4000);
+    setShowToast(true);
+    if (toastTimer.current) {
+    clearTimeout(toastTimer.current);
+    }
+    toastTimer.current = setTimeout(() => {
+      setShowToast(false);
+
+      setTimeout(() => {
+        setToast({
+          message: '',
+          type: ''
+        });
+      },300);
+    },4000);
   };
   const removeFromCart = (id) => {
     setCartItems(prevItems => prevItems.filter(item => item.id !== id));
@@ -89,10 +104,11 @@ function App() {
   return (
     <>
       <Navbar search={search} setSearch={setSearch} cartItems={cartItems} wishlist={wishlist} />
-      {toast.message && ( <Toast message={toast.message} type={toast.type} />)}
+      {toast.message && (<Toast message={toast.message} type={toast.type} showToast={showToast} />)}
       <Routes>
         <Route path="/" element={<Home search={search} onAddToCart={addToCart} removeFromCart={removeFromCart}/>} />
-        <Route path="/cart" element={<Cart cartItems={cartItems} removeFromCart={removeFromCart} increaseQuantity={increaseQuantity} decreaseQuantity={decreaseQuantity} totalItems={totalItems} totalPrice={totalPrice}/>} />
+        <Route path="/cart" element={<Cart cartItems={cartItems} removeFromCart={removeFromCart} increaseQuantity={increaseQuantity} decreaseQuantity={decreaseQuantity} totalItems={totalItems} totalPrice={totalPrice} />} />
+        <Route path='/checkout' element={<Checkout cartItems={cartItems} totalItems={totalItems} totalPrice={totalPrice} />} />
         <Route path="/product/:id" element={<ProductDetails onAddToCart={addToCart} wishlist={wishlist} setWishlist={setWishlist} />} />
         <Route path='/wishlist' element={<Wishlist wishlist={wishlist} setWishlist={setWishlist} onAddToCart={addToCart} />} />
         <Route path="*" element={<h1>404 Not Found</h1>} />

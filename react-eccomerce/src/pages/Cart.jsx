@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 function Cart({ cartItems, removeFromCart, increaseQuantity, decreaseQuantity, totalItems, totalPrice }) {
   if (cartItems.length === 0) {
     return (
@@ -49,10 +50,15 @@ function Cart({ cartItems, removeFromCart, increaseQuantity, decreaseQuantity, t
             ${totalPrice.toFixed(2)}
           </span>
         </div>
-         <button
+        <button
           className="w-full mt-5 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700"
         >
+        <Link
+          to="/checkout"
+          className="block w-full mt-6 bg-orange-500 hover:bg-orange-600 text-white text-center py-3 rounded-lg font-semibold transition"
+        >
           Proceed to Checkout
+        </Link>
         </button>
     </div>
     </>
