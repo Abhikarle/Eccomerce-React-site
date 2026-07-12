@@ -28,6 +28,7 @@ function App() {
     const savedDarkMode = JSON.parse(localStorage.getItem('darkMode'));
     return savedDarkMode ?? false;
   });
+  const [currentPage, setCurrentPage] = useState(1);
   const toastTimer = useRef(null);
    useEffect(() => {
   localStorage.setItem("cartItems", JSON.stringify(cartItems));
@@ -135,7 +136,7 @@ function App() {
       <Navbar search={search} setSearch={setSearch} cartItems={cartItems} wishlist={wishlist} toggleDarkMode={toggleDarkMode} darkMode={darkMode} />
       {toast.message && (<Toast message={toast.message} type={toast.type} showToast={showToast} />)}
       <Routes>
-        <Route path="/" element={<Home search={search} onAddToCart={addToCart} removeFromCart={removeFromCart}/>} />
+        <Route path="/" element={<Home search={search} onAddToCart={addToCart} currentPage={currentPage} setCurrentPage={setCurrentPage} />} />
         <Route path="/cart" element={<Cart cartItems={cartItems} removeFromCart={removeFromCart} increaseQuantity={increaseQuantity} decreaseQuantity={decreaseQuantity} totalItems={totalItems} totalPrice={totalPrice} darkMode={darkMode} />} />
         <Route path='/checkout' element={<Checkout cartItems={cartItems} totalItems={totalItems} totalPrice={totalPrice} showToastMessage={showToastMessage} clearCart={clearCart} />} />
         <Route path="/product/:id" element={<ProductDetails onAddToCart={addToCart} wishlist={wishlist} setWishlist={setWishlist} />} />
