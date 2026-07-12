@@ -4,7 +4,17 @@ function Home({ search, onAddToCart }) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const filteredProducts = products.filter(product => product.title.toLowerCase().includes(search.toLowerCase()));
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const filteredProducts = products.filter(product => {
+
+    const matchesCategory = selectedCategory === 'All' ?
+   true : product.category === selectedCategory;
+
+   const matchesSearch = product.title.toLowerCase().includes(search.toLowerCase());
+
+   return matchesCategory && matchesSearch;
+
+});
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -31,9 +41,29 @@ function Home({ search, onAddToCart }) {
   if (error) {
     return <p>Error: {error}</p>;
   }
+  const categories = [
+    "All",
+    ...new Set(products.map(product => product.category))
+  ];
   return (
     <div>
-      <ProductGrid products={filteredProducts} onAddToCart={onAddToCart}/>
+      <div className='mb-6'>
+        <label className='mr-3 font-semibold'>Category: </label>
+        <select
+          value={selectedCategory}
+          onChange={(e) => {
+            setSelectedCategory(e.target.value);
+          }}
+          className='border rounded-lg p-2'
+        >
+          {categories.map(category => {
+            return (
+              <option key={category} value={category}>{category}</option>
+            )
+          })}
+        </select>
+      </div>
+           <ProductGrid products={filteredProducts} onAddToCart={onAddToCart}/>
     </div>
   );
 }

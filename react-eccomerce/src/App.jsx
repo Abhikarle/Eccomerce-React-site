@@ -24,16 +24,26 @@ function App() {
     type: ""
   });
   const [showToast, setShowToast] = useState(false);
+  const [darkMode, setDarkMode] = useState(() => {
+    const savedDarkMode = JSON.parse(localStorage.getItem('darkMode'));
+    return savedDarkMode ?? false;
+  });
   const toastTimer = useRef(null);
    useEffect(() => {
   localStorage.setItem("cartItems", JSON.stringify(cartItems));
    }, [cartItems]);
+  useEffect(() => {
+  localStorage.setItem("darkMode", JSON.stringify(darkMode));
+}, [darkMode]);
   useEffect(() => {
     localStorage.setItem('wishlist', JSON.stringify(wishlist));
   }, [wishlist]);
   useEffect(() => {
     console.log("Cart Items:", cartItems);
   }, [cartItems]);
+  const toggleDarkMode = () => {
+    setDarkMode(prev => !prev);
+  }
   const addToCart = (product) => {
     setCartItems(prevItems => {
       const existingItem = prevItems.find(item => item.id === product.id);
@@ -121,19 +131,19 @@ function App() {
     setCartItems([]);
   }
   return (
-    <>
-      <Navbar search={search} setSearch={setSearch} cartItems={cartItems} wishlist={wishlist} />
+    <div className={darkMode ? 'bg-gray-900 text-white min-h-screen' : 'bg-gray-100 text-black min-h-screen'}>
+      <Navbar search={search} setSearch={setSearch} cartItems={cartItems} wishlist={wishlist} toggleDarkMode={toggleDarkMode} darkMode={darkMode} />
       {toast.message && (<Toast message={toast.message} type={toast.type} showToast={showToast} />)}
       <Routes>
         <Route path="/" element={<Home search={search} onAddToCart={addToCart} removeFromCart={removeFromCart}/>} />
-        <Route path="/cart" element={<Cart cartItems={cartItems} removeFromCart={removeFromCart} increaseQuantity={increaseQuantity} decreaseQuantity={decreaseQuantity} totalItems={totalItems} totalPrice={totalPrice} />} />
+        <Route path="/cart" element={<Cart cartItems={cartItems} removeFromCart={removeFromCart} increaseQuantity={increaseQuantity} decreaseQuantity={decreaseQuantity} totalItems={totalItems} totalPrice={totalPrice} darkMode={darkMode} />} />
         <Route path='/checkout' element={<Checkout cartItems={cartItems} totalItems={totalItems} totalPrice={totalPrice} showToastMessage={showToastMessage} clearCart={clearCart} />} />
         <Route path="/product/:id" element={<ProductDetails onAddToCart={addToCart} wishlist={wishlist} setWishlist={setWishlist} />} />
         <Route path='/wishlist' element={<Wishlist wishlist={wishlist} setWishlist={setWishlist} onAddToCart={addToCart} />} />
         <Route path='/order-success' element={<OrderSuccess totalItems={totalItems} totalPrice={totalPrice} />} />
         <Route path="*" element={<h1>404 Not Found</h1>} />
       </Routes>
-    </>
+    </div>
   )
 }
 

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import logo from '../assets/logo.svg';
 import SiteLogo from '../assets/SiteLogo.png';
-function Navbar({search, setSearch, cartItems, wishlist}) {
+function Navbar({search, setSearch, cartItems, wishlist, darkMode, toggleDarkMode}) {
   return (
     <nav className="flex justify-between items-center bg-gray-400 text-white shadow-md px-8 py-4">
       <div className="flex items-center justify-center min-w-20">
@@ -28,7 +28,7 @@ function Navbar({search, setSearch, cartItems, wishlist}) {
             </span>
           )}
           </Link>
-        <button onClick={() => alert('Login functionality not implemented yet.')} className="hover:scale-110 transition-transform">🌙</button>
+        <button onClick={toggleDarkMode} className="hover:scale-200 transition-transform">{darkMode ? '☀️' : '🌙'}</button>
       </div>
     </nav>
   );

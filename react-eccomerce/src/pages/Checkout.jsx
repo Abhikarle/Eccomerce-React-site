@@ -1,21 +1,23 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 function Checkout({ cartItems, totalItems, totalPrice, showToastMessage, clearCart }) {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    address: "",
-    city: "",
-    pincode: "",
-  });
+  const initialFormData = {
+  name: "",
+  email: "",
+  phone: "",
+  address: "",
+  city: "",
+  pincode: "",
+};
+
+const [formData, setFormData] = useState(initialFormData);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
+    setFormData(prev => ({
+      ...prev,
       [e.target.name]: e.target.value,
-    });
+    }));
   };
   const fields = [
     {
@@ -63,8 +65,8 @@ function Checkout({ cartItems, totalItems, totalPrice, showToastMessage, clearCa
       return;
     }
     if (!emailRegex.test(formData.email)) {
-        showToastMessage(
-      "Please Enter valid email address.",
+      showToastMessage(
+      "Please enter a valid email address.",
       "error"
       );
       return;
@@ -72,10 +74,14 @@ function Checkout({ cartItems, totalItems, totalPrice, showToastMessage, clearCa
 
     if (!phoneRegex.test(formData.phone)) {
       // show phone error toast
-        showToastMessage(
-      "Please Enter valid phone number.",
+      showToastMessage(
+      "Phone number must be exactly 10 digits.",
       "error"
       );
+      return;
+    }
+    if (!formData.address) {
+      showToastMessage("Address is required", "error");
       return;
     }
     setLoading(true);
@@ -92,6 +98,7 @@ function Checkout({ cartItems, totalItems, totalPrice, showToastMessage, clearCa
     "🎉 Order placed successfully!",
     "success"
     );
+    setFormData(initialFormData);
     navigate('/order-success', {
       state: orderData,
     });
@@ -109,12 +116,13 @@ function Checkout({ cartItems, totalItems, totalPrice, showToastMessage, clearCa
             </label>
 
             <input
-              type={field.type}
-              name={field.name}
-              value={formData[field.name]}
-              onChange={handleChange}
-              placeholder={field.placeholder}
-              className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            type={field.type}
+            name={field.name}
+            value={formData[field.name]}
+            onChange={handleChange}
+            disabled={loading}
+            placeholder={field.placeholder}
+            className={`w-full p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${loading ? "bg-gray-300 cursor-not-allowed" : "bg-white"}`}
             />
           </div>
         ))
@@ -129,6 +137,7 @@ function Checkout({ cartItems, totalItems, totalPrice, showToastMessage, clearCa
               rows="4"
               value={formData.address}
               onChange={handleChange}
+              disabled={loading}
               placeholder="Enter your address"
               className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
