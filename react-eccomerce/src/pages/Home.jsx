@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import ProductGrid from "../components/ProductGrid";
+import SkeletonCard from "../components/SkeletonCard";
 function Home({ search, onAddToCart, currentPage, setCurrentPage }) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -63,7 +64,16 @@ function Home({ search, onAddToCart, currentPage, setCurrentPage }) {
   }, [search, selectedCategory, sortOption, setCurrentPage]);
 
   if (loading) {
-    return <p>Loading...</p>;
+    return (
+      <div className='grid grid-cols-4 gap-6'>
+        {Array(8)
+          .fill()
+          .map((_, index) => (
+            <SkeletonCard key={index} />
+
+        ))}
+      </div>
+    );
   }
   if (error) {
     return <p>Error: {error}</p>;
