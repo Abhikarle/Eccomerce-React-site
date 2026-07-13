@@ -9,14 +9,16 @@ function ProductCard({ product, onAddToCart }) {
           <p className='font-bold'>${product.price}</p>
           <p>{product.category}</p>
           <p>
-           ⭐
           {Array(5)
           .fill()
           .map((_, index) => {
             return (
-              index < Math.floor(product.rating)
-              ? "⭐" :  "☆"
-            )})} ({product.rating})
+              <span key={index}>
+                {index < Math.floor(product.rating).toFixed(2)
+                  ? "⭐" : "☆"
+                }</span>
+            )
+          })} {product.rating}
           </p>
           <button type='button' className='bg-red-500 text-white  px-4 py-2 rounded-lg mt-2 hover:bg-blue-600 transition-colors duration-300' onClick={() => onAddToCart(product)}>
             Add to Cart
