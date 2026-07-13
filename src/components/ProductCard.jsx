@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
-function ProductCard({ product, onAddToCart }) {
+import useCart from "../hooks/useCart";
+function ProductCard({ product }) {
+  const { addToCart } = useCart();
   return (
     <div className='p-4 h-full w-full object-contain rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300'>
         <div className="flex justify-center">
@@ -14,13 +16,13 @@ function ProductCard({ product, onAddToCart }) {
           .map((_, index) => {
             return (
               <span key={index}>
-                {index < Math.floor(product.rating).toFixed(2)
+                {index < Math.floor(product.rating)
                   ? "⭐" : "☆"
                 }</span>
             )
           })} {product.rating}
           </p>
-          <button type='button' className='bg-red-500 text-white  px-4 py-2 rounded-lg mt-2 hover:bg-blue-600 transition-colors duration-300' onClick={() => onAddToCart(product)}>
+          <button type='button' className='bg-red-500 text-white  px-4 py-2 rounded-lg mt-2 hover:bg-blue-600 transition-colors duration-300' onClick={() => addToCart(product)}>
             Add to Cart
           </button>
           <Link to={`/product/${product.id}`}
