@@ -8,6 +8,16 @@ function ProductCard({ product, onAddToCart }) {
           <h2 className="font-semibold line-clamp-2">{product.title}</h2>
           <p className='font-bold'>${product.price}</p>
           <p>{product.category}</p>
+          <p>
+           ⭐
+          {Array(5)
+          .fill()
+          .map((_, index) => {
+            return (
+              index < Math.floor(product.rating)
+              ? "⭐" :  "☆"
+            )})} ({product.rating})
+          </p>
           <button type='button' className='bg-red-500 text-white  px-4 py-2 rounded-lg mt-2 hover:bg-blue-600 transition-colors duration-300' onClick={() => onAddToCart(product)}>
             Add to Cart
           </button>

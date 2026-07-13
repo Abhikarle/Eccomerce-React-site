@@ -1,4 +1,3 @@
-
 function Toast({ message, type, showToast }) {
   const bgColor =
   type === "success"

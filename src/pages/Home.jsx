@@ -1,14 +1,21 @@
 import { useEffect, useState } from "react";
 import ProductGrid from "../components/ProductGrid";
 import SkeletonCard from "../components/SkeletonCard";
-function Home({ search, onAddToCart, currentPage, setCurrentPage }) {
+import { SearchX } from "lucide-react";
+function Home({ search, setSearch, onAddToCart, currentPage, setCurrentPage }) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [priceRange, setPriceRange] = useState("All");
   const [sortOption, setSortOption] = useState("default");
-
+  const clearFilters = () => {
+    setSearch('');
+    setSelectedCategory('All');
+    setPriceRange('All');
+    setSortOption('default');
+    setCurrentPage(1);
+   }
   const filteredProducts = products.filter(product => {
 
     const matchesCategory = selectedCategory === 'All' ?
@@ -133,24 +140,45 @@ function Home({ search, onAddToCart, currentPage, setCurrentPage }) {
           </select>
         </div>
       </div>
-      <ProductGrid products={currentProducts} onAddToCart={onAddToCart} />
+      {currentProducts.length > 0 ? (
+        <ProductGrid products={currentProducts} onAddToCart={onAddToCart} />
+      ) : (
+          <div className='text-center py-16'>
+            <SearchX className="w-20 h-20 text-slate-300 mx-auto mb-5" />
+            <h2 className="text-3xl font-bold mt-4">
+                No Products Found
+            </h2>
+            <p className="text-gray-500 mt-2 max-w-md mx-auto">
+                Try changing your search, category or price filter.
+            </p>
+            <button
+                className="mt-6 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition" onClick={clearFilters}
+            >
+                Clear Filters
+            </button>
+          </div>
+
+      )}
       <div className='flex justify-center gap-2 mt-8'>
+         <button className={`px-4 py-3 rounded transition ${currentPage === 1 ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-800 cursor-pointer'}`} disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>← Previous</button>
         {Array(totalPages)
           .fill()
-          .map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentPage(index + 1)}
-              className={`px-4 py-3 rounded
-                  ${
-                currentPage === index + 1
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-200 hover:bg-gray-400'
-                }`}
-            >
-              {index + 1}
-            </button>
-          ))}
+          .map((_, index) => {
+            return (
+              <button
+                key={index}
+                onClick={() => setCurrentPage(index + 1)}
+                className={`px-4 py-3 rounded
+                    ${currentPage === index + 1
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-200 hover:bg-gray-400'
+                  }`}
+              >
+                {index + 1}
+                </button>
+            )
+          })}
+          <button disabled={currentPage === totalPages}  className={`px-4 py-3 rounded transition ${currentPage === totalPages ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : 'bg-blue-400 hover:bg-blue-800 cursor-pointer'}`} onClick={() => setCurrentPage(currentPage + 1)}>Next →</button>
       </div>
     </div>
   );
