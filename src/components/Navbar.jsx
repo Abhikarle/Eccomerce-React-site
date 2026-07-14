@@ -4,6 +4,7 @@ import useTheme from "../hooks/useTheme";
 import useWishlist  from '../hooks/useWishlist';
 import logo from '../assets/logo.svg';
 import SiteLogo from '../assets/SiteLogo.png';
+import SearchBar from "./SearchBar";
 function Navbar({ search, setSearch }) {
   const { cartItems } = useCart();
   const { wishlist } = useWishlist();
@@ -14,9 +15,10 @@ function Navbar({ search, setSearch }) {
       <div className="flex items-center justify-center min-w-20">
         <img src={SiteLogo} alt=" Site Logo" width={100} className='w-20 sm:w-24 md:w-24 h-auto object-contain'/>
       </div>
-      <div>
-        <input type="text" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} className='border border-gray-300 rounded-lg px-4 py-2 w-96 max-w-md text-black'/>
-      </div>
+      <SearchBar
+        search={search}
+        setSearch={setSearch}
+      />
       <div className="flex items-center gap-6 text-sm md:text-base lg:text-lg">
         <Link to="/" className='hover:text-gray-700 transition-colors'>Home</Link>
         <Link to='/wishlist' className='relative inline-block hover:text-gray-700 transition-colors'>

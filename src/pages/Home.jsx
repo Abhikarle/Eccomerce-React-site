@@ -21,7 +21,12 @@ function Home({ search, setSearch, currentPage, setCurrentPage }) {
     const matchesCategory = selectedCategory === 'All' ?
    true : product.category === selectedCategory;
 
-    const matchesSearch = product.title.toLowerCase().includes(search.toLowerCase());
+    const searchText = search.toLowerCase().trim();
+    
+    const matchesSearch = product.title?.toLowerCase().includes(searchText) ||
+      product.brand?.toLowerCase().includes(searchText) ||
+      product.category?.toLowerCase().includes(searchText) ||
+      product.description?.toLowerCase().includes(searchText);
 
     const matchesPrice = priceRange === 'All' ? true : priceRange === '0-100' ? product.price >= 0 && product.price <= 100 : priceRange === '100-500' ? product.price >= 100 && product.price <= 500 : priceRange === '500+' ? product.price >= 500 : false;
 
