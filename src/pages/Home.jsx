@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import ProductGrid from "../components/ProductGrid";
 import SkeletonCard from "../components/SkeletonCard";
 import { SearchX } from "lucide-react";
+import useDebounce from '../hooks/useDebounce';
 function Home({ search, setSearch, currentPage, setCurrentPage }) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -9,6 +10,7 @@ function Home({ search, setSearch, currentPage, setCurrentPage }) {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [priceRange, setPriceRange] = useState("All");
   const [sortOption, setSortOption] = useState("default");
+   const debounceSearch = useDebounce(search, 300);
   const clearFilters = () => {
     setSearch('');
     setSelectedCategory('All');
@@ -21,8 +23,9 @@ function Home({ search, setSearch, currentPage, setCurrentPage }) {
     const matchesCategory = selectedCategory === 'All' ?
    true : product.category === selectedCategory;
 
-    const searchText = search.toLowerCase().trim();
-    
+
+    const searchText = debounceSearch.toLowerCase().trim();
+
     const matchesSearch = product.title?.toLowerCase().includes(searchText) ||
       product.brand?.toLowerCase().includes(searchText) ||
       product.category?.toLowerCase().includes(searchText) ||
@@ -73,7 +76,7 @@ function Home({ search, setSearch, currentPage, setCurrentPage }) {
   useEffect(() => {
     setCurrentPage(1);
 
-  }, [search, selectedCategory, sortOption, setCurrentPage]);
+  }, [debounceSearch, selectedCategory, sortOption, setCurrentPage]);
 
   if (loading) {
     return (
