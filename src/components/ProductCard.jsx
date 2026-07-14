@@ -8,7 +8,7 @@ function ProductCard({ product }) {
   return (
     <div className='p-4 h-full w-full object-contain rounded-lg bg-white dark:bg-gray-800 dark:text-white text-black dark:shadow-black/50 shadow-md hover:shadow-xl transition-all duration-300'>
         <div className="flex justify-center">
-           <img src={product.thumbnail} alt={product.title} width={200} />
+           <img src={product.thumbnail} alt={product.title} className='w-full h-48 object-contain' />
         </div>
           <h2 className="font-semibold line-clamp-2">{product.title}</h2>
           <p className='font-bold'>${product.price}</p>

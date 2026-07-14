@@ -11,7 +11,7 @@ function Navbar({ search, setSearch }) {
   const { darkMode, toggleDarkMode } = useTheme();
 
   return (
-    <nav className="flex justify-between items-center bg-gray-400  shadow-md px-8 py-4 text-white">
+    <nav className="flex flex-wrap justify-between items-center bg-gray-400 gap-4 shadow-md px-4 py-4 text-white">
       <div className="flex items-center justify-center min-w-20">
         <img src={SiteLogo} alt=" Site Logo" width={100} className='w-20 sm:w-24 md:w-24 h-auto object-contain'/>
       </div>

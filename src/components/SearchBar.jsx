@@ -15,7 +15,7 @@ function SearchBar({ search, setSearch }) {
         placeholder="Search products, brands..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        className="w-full border border-gray-300 rounded-lg py-2 pl-10 pr-10 text-black"
+        className="w-full md:w-80 lg:w-96 border border-gray-300 rounded-lg py-2 px-4 text-black"
       />
 
       {/* Clear button */}
