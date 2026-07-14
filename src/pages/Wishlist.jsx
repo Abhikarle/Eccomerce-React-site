@@ -1,5 +1,11 @@
 import { Link } from 'react-router-dom';
-function Wishlist({ wishlist, setWishlist, onAddToCart }) {
+import useCart from "../hooks/useCart";
+import useToast from '../hooks/useToast'
+import useWishlist from "../hooks/useWishlist";
+function Wishlist() {
+  const { addToCart } = useCart();
+  const { showToastMessage } = useToast();
+  const { wishlist, toggleWishlist } = useWishlist();
   if (wishlist.length === 0) {
     return (
       <div className='flex flex-col items-center justify-center text-center px-6 min-h-[70vh]'>
@@ -20,11 +26,6 @@ function Wishlist({ wishlist, setWishlist, onAddToCart }) {
     </div>
     )
   }
-
-  const removeFromWishlist = (id) => {
-    const updatedWishlist = wishlist.filter(item => item.id !== id);
-    setWishlist(updatedWishlist);
-  }
   return (
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
       {wishlist.map((item) => {
@@ -34,7 +35,7 @@ function Wishlist({ wishlist, setWishlist, onAddToCart }) {
               <img src={item.thumbnail} alt={item.title} className='w-full h-48 object-contain mx-auto'/>
               <h2 className='text-lg font-bold mt-2 line-clamp-2'>{item.title}</h2>
                 <p className='text-gray-600 text-sm'>{item.brand}</p>
-              {Array.from({ length: 5 }).map((index) =>  (
+              {Array.from({ length: 5 }).map((_, index) =>  (
                   <span key={index}>
                     {index < rating ? "⭐" : "☆"}
                   </span>
@@ -50,8 +51,11 @@ function Wishlist({ wishlist, setWishlist, onAddToCart }) {
                 )}
               <p className='text-2xl font-bold text-orange-600 mt-2'>${item.price.toFixed(2)}</p>
               <div className="flex gap-3 mt-5">
-                <button className='w-full mt-5 bg-green-400 text-white py-2 rounded-lg hover:bg-black' onClick={() => onAddToCart(item)}>Add To cart</button>
-                <button className='w-full mt-5 bg-indigo-700 text-white py-2 rounded-lg hover:bg-black' onClick={() => removeFromWishlist(item.id)}>🗑 Remove</button>
+                <button className='w-full mt-5 bg-green-400 text-white py-2 rounded-lg hover:bg-black' onClick={() => {
+                  addToCart(item);
+                  showToastMessage("✅ Product added to cart!", "success");
+                }}>Add To cart</button>
+                <button className='w-full mt-5 bg-indigo-700 text-white py-2 rounded-lg hover:bg-black' onClick={() => toggleWishlist(item)}>🗑 Remove</button>
               </div>
             </div>
         )})}

@@ -1,5 +1,14 @@
 import { Link } from 'react-router-dom'
-function Cart({ cartItems, removeFromCart, increaseQuantity, decreaseQuantity, totalItems, totalPrice, darkMode }) {
+import useCart from "../hooks/useCart";
+function Cart({ darkMode }) {
+  const {
+  cartItems,
+  removeFromCart,
+  increaseQuantity,
+  decreaseQuantity,
+  totalItems,
+  totalPrice,
+  } = useCart();
   if (cartItems.length === 0) {
     return (
       <div className='flex flex-col items-center justify-center h-screen'>

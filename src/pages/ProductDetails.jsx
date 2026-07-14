@@ -1,6 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-function ProductDetails({ onAddToCart, wishlist, setWishlist }) {
+import useCart from "../hooks/useCart";
+import useToast from '../hooks/useToast'
+import useWishlist from "../hooks/useWishlist";
+function ProductDetails() {
+  const { addToCart } = useCart();
+  const { showToastMessage } = useToast();
+  const { wishlist, toggleWishlist } = useWishlist();
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [error, setError] = useState(null);
@@ -48,15 +54,6 @@ function ProductDetails({ onAddToCart, wishlist, setWishlist }) {
   const isWishlisted = wishlist.some(
   item => item.id === product.id
   );
-  const toggleWishlist = () => {
-    if (isWishlisted) {
-      const updatedWishlist = wishlist.filter(item => item.id !== product.id);
-      setWishlist(updatedWishlist);
-    } else {
-      const updatedWishlist = [...wishlist, product];
-      setWishlist(updatedWishlist);
-    }
-  };
   return (
     <>
       <div className='max-w-7xl mx-auto px-5 pt-6'>
@@ -87,11 +84,11 @@ function ProductDetails({ onAddToCart, wishlist, setWishlist }) {
           <span className=' text-white bg-red-500 px-2 py-1 font-semibold rounded-full'>{product.discountPercentage}% OFF</span>
         </div>
         <div className='flex'>
-          {Array.from({ length: 5 }).map((index) => {
+          {Array.from({ length: 5 }).map((_, index) => (
             <span key={index}>
               {index < rating ? "⭐" : "☆"}
             </span>
-          })}
+          ))}
         </div>
         <p>
           <span className="font-semibold">Brand: </span>{product.brand}
@@ -127,7 +124,7 @@ function ProductDetails({ onAddToCart, wishlist, setWishlist }) {
             const reviewDate = new Date(review.date);
           return(
             <div key={index} className=''>
-              {Array.from({ length: 5 }).map((index) => {
+              {Array.from({ length: 5 }).map((_, index) => {
                 return (
                 <span key={index}>
                   {index < reviewRating ? "⭐" : "☆"}
@@ -161,12 +158,17 @@ function ProductDetails({ onAddToCart, wishlist, setWishlist }) {
             </button>
           </div>
         <button className='w-full mt-5 bg-indigo-700 text-white py-2 rounded-lg hover:bg-black' onClick={() => {
-          onAddToCart({ ...product, quantity })
+            addToCart({ ...product, quantity });
+            showToastMessage("✅ Product added to cart!", "success");
           }}
           >
             🛍 Add to Cart
           </button>
-          <button onClick={toggleWishlist}>{isWishlisted ? '❤️ Remove from Wishlist' : '🤍 Add to Wishlist'}</button>
+          <button  className={`w-full mt-3 py-2         rounded-lg transition ${
+          isWishlisted
+          ? "bg-red-500 text-white hover:bg-red-600"
+          : "bg-gray-700 hover:bg-gray-400"
+         }`} onClick={() =>toggleWishlist(product)}>{isWishlisted ? '❤️ Remove from Wishlist' : '🤍 Add to Wishlist'}</button>
         </div>
         </div>
       <div className='max-w-7xl mx-auto p-7'>

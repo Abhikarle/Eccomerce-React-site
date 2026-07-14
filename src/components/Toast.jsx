@@ -1,3 +1,4 @@
+
 function Toast({ message, type, showToast }) {
   const bgColor =
   type === "success"
@@ -7,8 +8,15 @@ function Toast({ message, type, showToast }) {
     : "bg-yellow-500";
 
   return (
-    <div className={`fixed top-5 right-5 ${bgColor} text-white p-4 rounded-lg shadow-lg transition-all${showToast ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'} duration-300`}>
-      <p>{message}</p>
+    <div
+      className={`
+    fixed top-5 right-5 z-50
+    ${bgColor}
+      text-white px-5 py-3
+       rounded-lg shadow-xl
+        transition-all duration-300 ${showToast ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'}`}
+    >
+    {message}
     </div>
   )
 }

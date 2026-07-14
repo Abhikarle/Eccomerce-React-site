@@ -1,9 +1,16 @@
 import { Link } from 'react-router-dom';
+import useCart from "../hooks/useCart";
+import useTheme from "../hooks/useTheme";
+import useWishlist  from '../hooks/useWishlist';
 import logo from '../assets/logo.svg';
 import SiteLogo from '../assets/SiteLogo.png';
-function Navbar({search, setSearch, cartItems, wishlist, darkMode, toggleDarkMode}) {
+function Navbar({ search, setSearch }) {
+  const { cartItems } = useCart();
+  const { wishlist } = useWishlist();
+  const { darkMode, toggleDarkMode } = useTheme();
+
   return (
-    <nav className="flex justify-between items-center bg-gray-400 text-white shadow-md px-8 py-4">
+    <nav className="flex justify-between items-center bg-gray-400 text-white shadow-md px-8 py-4 dark:bg-gray-900">
       <div className="flex items-center justify-center min-w-20">
         <img src={SiteLogo} alt=" Site Logo" width={100} className='w-20 sm:w-24 md:w-24 h-auto object-contain'/>
       </div>

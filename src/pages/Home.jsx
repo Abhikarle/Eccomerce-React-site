@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import ProductGrid from "../components/ProductGrid";
 import SkeletonCard from "../components/SkeletonCard";
 import { SearchX } from "lucide-react";
-function Home({ search, setSearch, onAddToCart, currentPage, setCurrentPage }) {
+function Home({ search, setSearch, currentPage, setCurrentPage }) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -141,7 +141,7 @@ function Home({ search, setSearch, onAddToCart, currentPage, setCurrentPage }) {
         </div>
       </div>
       {currentProducts.length > 0 ? (
-        <ProductGrid products={currentProducts} onAddToCart={onAddToCart} />
+        <ProductGrid products={currentProducts} />
       ) : (
           <div className='text-center py-16'>
             <SearchX className="w-20 h-20 text-slate-300 mx-auto mb-5" />

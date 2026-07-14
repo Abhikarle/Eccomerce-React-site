@@ -72,7 +72,7 @@ function CartProvider({ children }) {
 };
 
   return (
-    <CartContext.Provider value={{ value }}>
+    <CartContext.Provider value={ value }>
       {children}
     </CartContext.Provider>
   );

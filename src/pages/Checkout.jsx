@@ -1,6 +1,15 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-function Checkout({ cartItems, totalItems, totalPrice, showToastMessage, clearCart }) {
+import useToast  from '../hooks/useToast'
+import useCart from "../hooks/useCart";
+function Checkout() {
+  const { showToastMessage } = useToast();
+  const {
+    cartItems,
+    totalItems,
+    totalPrice,
+    clearCart,
+} = useCart();
   const initialFormData = {
   name: "",
   email: "",
