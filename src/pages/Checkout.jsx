@@ -152,7 +152,7 @@ const [formData, setFormData] = useState(initialFormData);
             />
         </div>
       </div>
-        <div className="w-96 bg-white rounded-2xl dark:bg-gray-800 text-black dark:text-white shadow-lg transition-all duration-300 p-6">
+        <div className="w-full lg:w-96 bg-white rounded-2xl dark:bg-gray-800 text-black dark:text-white shadow-lg transition-all duration-300 p-6">
           <h2 className='text-2xl font-bold mb-6'>Order Summary</h2>
           {cartItems.map((item) => (
             <div

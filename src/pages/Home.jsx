@@ -99,7 +99,7 @@ function Home({ search, setSearch, currentPage, setCurrentPage }) {
   ];
   return (
     <div>
-      <div className=' flex flex-wrap gap-4 items-center mb-6'>
+      <div className=' flex flex-col sm:flex-row flex-wrap gap-4 items-center mb-6'>
         <label className='mr-3 mt-4 font-semibold'>Category: </label>
         <select
           value={selectedCategory}
@@ -167,7 +167,7 @@ function Home({ search, setSearch, currentPage, setCurrentPage }) {
           </div>
 
       )}
-      <div className='flex justify-center gap-2 mt-8'>
+      <div className='flex flex-wrap justify-center gap-2 mt-8'>
          <button className={`px-4 py-3 rounded transition ${currentPage === 1 ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-800 cursor-pointer'}`} disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>← Previous</button>
         {Array(totalPages)
           .fill()
