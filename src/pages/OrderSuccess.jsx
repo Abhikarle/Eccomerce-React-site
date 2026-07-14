@@ -10,9 +10,9 @@ function OrderSuccess() {
     navigate('/');
   }
   return (
-    <div className='max-w-3xl mx-auto p-10'>
-      <div className='bg-white rounded-xl shadow-lg p-10 text-center'>
-        <h1 className='text-4xl font-bold text-green-600 mb-4'>🎉 Order Placed Successfully!</h1>
+    <div className='min-h-screen flex items-center justify-center px-6 py-12'>
+      <div className='w-full max-w-3xl  rounded-3xl bg-white dark:bg-gray-800 text-black dark:text-white shadow-xl dark:shadow-black/40 p-10 text-center transition-all duration-300'>
+        <h1 className='text-4xl font-extrabold text-green-600 mb-4'>🎉 Order Placed Successfully!</h1>
         <p className="text-gray-600 text-lg mb-8">
           Thank you for your purchase. Your order has been received and is being processed.
         </p>

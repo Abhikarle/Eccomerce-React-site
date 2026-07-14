@@ -6,7 +6,7 @@ function ProductCard({ product }) {
    const { showToastMessage } = useToast();
 
   return (
-    <div className='p-4 h-full w-full object-contain rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300'>
+    <div className='p-4 h-full w-full object-contain rounded-lg bg-white dark:bg-gray-800 dark:text-white text-black dark:shadow-black/50 shadow-md hover:shadow-xl transition-all duration-300'>
         <div className="flex justify-center">
            <img src={product.thumbnail} alt={product.title} width={200} />
         </div>

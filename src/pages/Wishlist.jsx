@@ -8,7 +8,7 @@ function Wishlist() {
   const { wishlist, toggleWishlist } = useWishlist();
   if (wishlist.length === 0) {
     return (
-      <div className='flex flex-col items-center justify-center text-center px-6 min-h-[70vh]'>
+      <div className='flex flex-col items-center justify-center  text-center px-6 min-h-[70vh]'>
         <div className="text-7xl mb-6">💖</div>
         <h1 className="text-3xl md:text-4xl font-bold text-gray-800">
           Your Wishlist is Empty!
@@ -27,14 +27,14 @@ function Wishlist() {
     )
   }
   return (
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
+      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 '>
       {wishlist.map((item) => {
           const rating = Math.round(item.rating);
           return(
-              <div key={item.id} className='border rounded-lg shadow p-4 hover:shadow-xl transition'>
+              <div key={item.id} className='border rounded-lg shadow p-4 hover:shadow-xl transition-all duration-300 bg-white dark:bg-gray-800 text-black dark:text-white dark:border-gray-700 dark:shadow-black/40 '>
               <img src={item.thumbnail} alt={item.title} className='w-full h-48 object-contain mx-auto'/>
               <h2 className='text-lg font-bold mt-2 line-clamp-2'>{item.title}</h2>
-                <p className='text-gray-600 text-sm'>{item.brand}</p>
+                <p className='text-gray-600 dark:text-gray-300 text-sm'>{item.brand}</p>
               {Array.from({ length: 5 }).map((_, index) =>  (
                   <span key={index}>
                     {index < rating ? "⭐" : "☆"}

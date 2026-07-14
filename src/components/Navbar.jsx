@@ -11,7 +11,7 @@ function Navbar({ search, setSearch }) {
   const { darkMode, toggleDarkMode } = useTheme();
 
   return (
-    <nav className="flex justify-between items-center bg-gray-400 text-white shadow-md px-8 py-4 dark:bg-gray-900">
+    <nav className="flex justify-between items-center bg-gray-400  shadow-md px-8 py-4 text-white">
       <div className="flex items-center justify-center min-w-20">
         <img src={SiteLogo} alt=" Site Logo" width={100} className='w-20 sm:w-24 md:w-24 h-auto object-contain'/>
       </div>
@@ -37,7 +37,9 @@ function Navbar({ search, setSearch }) {
             </span>
           )}
           </Link>
-        <button onClick={toggleDarkMode} className="hover:scale-200 transition-transform">{darkMode ? '☀️' : '🌙'}</button>
+        <button onClick={() => {
+          toggleDarkMode();
+        }} className="hover:scale-200 transition-transform">{darkMode ? '☀️' : '🌙'}</button>
       </div>
     </nav>
   );
