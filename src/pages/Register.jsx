@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import useToast from "../hooks/useToast";
-import { User, Mail, Lock } from "lucide-react";
+import { User, Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { Link } from "react-router-dom";
 function Register() {
   const navigate = useNavigate();
@@ -14,6 +14,7 @@ function Register() {
       confirmPassword: "",
     };
   const [formData, setFormData] = useState(initialFormData);
+  const [showPassword, setShowPassword] = useState(false);
   const handleChange = (e) => {
     setFormData((prev) => ({
       ...prev,
@@ -88,11 +89,25 @@ function Register() {
           </div>
         <div className='relative'>
           <Lock size={20} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400"/>
-          <input type="password" autoComplete='new-password' name="password" value={formData.password} onChange={handleChange} placeholder="Password" className="w-full pl-11 pr-4 py-3 bg-white text-black border-gray-300 dark:bg-gray-800 dark:text-white dark:border-gray-700 dark:placeholder:text-gray-700 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300" />
+            <input type={showPassword ? "text" : "password"} autoComplete='new-password' name="password" value={formData.password} onChange={handleChange} placeholder="Password" className="w-full pl-11 pr-4 py-3 bg-white text-black border-gray-300 dark:bg-gray-800 dark:text-white dark:border-gray-700 dark:placeholder:text-gray-700 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300" />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-blue-600"
+            >
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
         </div>
         <div className='relative'>
             <Lock size={20} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400"/>
-            <input type="password"  autoComplete='new-password' name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} placeholder="Confirm Password" className="w-full pl-11 pr-4 bg-white text-black border-gray-300 dark:bg-gray-800 dark:text-white dark:border-gray-700 dark:placeholder:text-gray-700 py-3 border rounded-lg focus:outline-none focus:border-blue-500  transition-all duration-300 focus:ring-2 focus:ring-blue-500" />
+            <input type={showPassword ? "text" : "password"} autoComplete='new-password' name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} placeholder="Confirm Password" className="w-full pl-11 pr-4 bg-white text-black border-gray-300 dark:bg-gray-800 dark:text-white dark:border-gray-700 dark:placeholder:text-gray-700 py-3 border rounded-lg focus:outline-none focus:border-blue-500  transition-all duration-300 focus:ring-2 focus:ring-blue-500" />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-blue-600"
+            >
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
         </div>
           <button className='w-full bg-blue-600 hover:bg-blue-800  text-white rounded-lg font-semibold hover:cursor-pointer transition-all duration-300 shadow-md hover:shadow-xl active:scale-95 py-3
         ' type="button" onClick={handleRegister}>

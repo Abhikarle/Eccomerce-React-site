@@ -106,7 +106,10 @@ function Home({ search, setSearch, currentPage, setCurrentPage }) {
           onChange={(e) => {
             setSelectedCategory(e.target.value);
           }}
-          className='border mt-3.5 rounded-lg p-2'
+          className="border rounded-lg p-2 mt-3
+          bg-white text-black border-gray-300
+          dark:bg-gray-800 dark:text-white dark:border-gray-700
+          focus:ring-2 focus:ring-blue-500"
         >
           {categories.map(category => {
             return (
@@ -121,8 +124,11 @@ function Home({ search, setSearch, currentPage, setCurrentPage }) {
           <select
             value={priceRange}
             onChange={(e) =>
-              setPriceRange(e.target.value)}
-            className='border rounded-lg p-2'
+            setPriceRange(e.target.value)}
+            className="border rounded-lg p-2
+            bg-white text-black border-gray-300
+            dark:bg-gray-800 dark:text-white dark:border-gray-700
+            focus:ring-2 focus:ring-blue-500"
           >
             <option value="All">All</option>
             <option value="0-100">$0 - $100</option>
@@ -138,7 +144,10 @@ function Home({ search, setSearch, currentPage, setCurrentPage }) {
           <select
             value={sortOption}
             onChange={(e) => setSortOption(e.target.value)}
-            className='border rounded-lg p-2'
+            className="border rounded-lg p-2
+            bg-white text-black border-gray-300
+            dark:bg-gray-800 dark:text-white dark:border-gray-700
+            focus:ring-2 focus:ring-blue-500"
           >
             <option value='default'>Default</option>
             <option value='low-high'>Price: Low → High</option>
