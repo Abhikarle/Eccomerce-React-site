@@ -10,6 +10,7 @@ import Wishlist from './pages/Wishlist'
 import Checkout from './pages/Checkout'
 import OrderSuccess from './pages/OrderSuccess'
 import NotFound from "./pages/NotFound";
+import Register from "./pages/Register";
 function App() {
   const { darkMode } = useTheme();
   const [search, setSearch] = useState("");
@@ -30,6 +31,7 @@ function App() {
         <Route path="/product/:id" element={<ProductDetails  />} />
         <Route path='/wishlist' element={<Wishlist />} />
         <Route path='/order-success' element={<OrderSuccess />} />
+        <Route path='/register' element={<Register />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
