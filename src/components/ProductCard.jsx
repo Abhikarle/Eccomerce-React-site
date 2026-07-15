@@ -25,14 +25,14 @@ function ProductCard({ product }) {
             )
           })} {product.rating}
           </p>
-      <button type='button' className='bg-red-500 text-white  px-4 py-2 rounded-lg mt-2 hover:bg-blue-600 transition-colors duration-300' onClick={() => {
+      <button type='button' className='bg-red-500 text-white flex-1  px-4 py-2 rounded-lg mt-2 hover:bg-blue-600 transition-colors duration-300' onClick={() => {
         addToCart(product);
         showToastMessage("✅ Product added to cart!", "success");
       }}>
             Add to Cart
           </button>
           <Link to={`/product/${product.id}`}
-            className='bg-indigo-600 text-white px-4 py-2 rounded-lg mt-2  ml-2.5 hover:bg-blue-600 transition-colors duration-300'>
+            className='bg-indigo-600 text-white px-4 py-2 flex-1 rounded-lg mt-2  ml-2.5 hover:bg-blue-600 transition-colors duration-300'>
             View Details
           </Link>
     </div>

@@ -114,7 +114,7 @@ const [formData, setFormData] = useState(initialFormData);
   }, 3000);
   }
   return (
-    <div className='max-w-7xl mx-auto p-6 min-h-screen'>
+    <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 min-h-screen'>
       <h1 className='text-4xl font-bold mb-8'>Checkout</h1>
       <div className='flex flex-col lg:flex-row gap-8'>
       <div className="flex-1 bg-white rounded-2xl shadow-lg p-6 dark:bg-gray-800 text-black dark:text-white dark:shadow-black/40 transition-all duration-300">

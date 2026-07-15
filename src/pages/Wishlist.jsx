@@ -50,7 +50,7 @@ function Wishlist() {
                   </p>
                 )}
               <p className='text-2xl font-bold text-orange-600 mt-2'>${item.price.toFixed(2)}</p>
-              <div className="flex gap-3 mt-5">
+              <div className="flex flex-col sm:flex-row gap-3 mt-5">
                 <button className='w-full mt-5 bg-green-400 text-white py-2 rounded-lg hover:bg-black' onClick={() => {
                   addToCart(item);
                   showToastMessage("✅ Product added to cart!", "success");

@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import useCart from "../hooks/useCart";
 import useToast from '../hooks/useToast'
 import useWishlist from "../hooks/useWishlist";
+import LoadingSpinner from '../components/LoadingSpinner';
 function ProductDetails() {
   const { addToCart } = useCart();
   const { showToastMessage } = useToast();
@@ -41,7 +42,7 @@ function ProductDetails() {
     fetchProductDetails();
   }, [id]);
   if (loading) {
-    return <h2>Loading....</h2>
+    return <LoadingSpinner />;
   }
   if (error) {
     return <p>Error: {error}</p>
@@ -56,7 +57,7 @@ function ProductDetails() {
   );
   return (
     <>
-      <div className='max-w-7xl mx-auto px-5 pt-6'>
+      <div className='max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-6'>
         <Link to='/' className='text-blue-500 hover:underline'>
           Home
         </Link>
@@ -157,18 +158,20 @@ function ProductDetails() {
               +
             </button>
           </div>
-        <button className='w-full mt-5 bg-indigo-700 text-white py-2 rounded-lg hover:bg-black' onClick={() => {
-            addToCart({ ...product, quantity });
-            showToastMessage("✅ Product added to cart!", "success");
-          }}
-          >
-            🛍 Add to Cart
-          </button>
-          <button  className={`w-full mt-3 py-2         rounded-lg transition ${
-          isWishlisted
-          ? "bg-red-500 text-white hover:bg-red-600"
-          : "bg-gray-700 hover:bg-gray-400"
-         }`} onClick={() =>toggleWishlist(product)}>{isWishlisted ? '❤️ Remove from Wishlist' : '🤍 Add to Wishlist'}</button>
+          <div className="flex flex-col sm:flex-row gap-3 mt-5">
+            <button className='w-full mt-5 flex-1 bg-indigo-700 text-white py-2 rounded-lg hover:bg-black' onClick={() => {
+                addToCart({ ...product, quantity });
+                showToastMessage("✅ Product added to cart!", "success");
+              }}
+              >
+                🛍 Add to Cart
+              </button>
+                  <button  className={`w-full mt-3 py-2 flex-1 rounded-lg transition ${
+                  isWishlisted
+                  ? "bg-red-500 text-white hover:bg-red-600"
+                  : "bg-gray-700 hover:bg-gray-400"
+                  }`} onClick={() => toggleWishlist(product)}>{isWishlisted ? '❤️ Remove from Wishlist' : '🤍 Add to Wishlist'}</button>
+            </div>
         </div>
         </div>
       <div className='max-w-7xl mx-auto p-7'>

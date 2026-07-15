@@ -99,7 +99,7 @@ function Home({ search, setSearch, currentPage, setCurrentPage }) {
   ];
   return (
     <div>
-      <div className=' flex flex-col sm:flex-row flex-wrap gap-4 items-center mb-6'>
+      <div className='max-w-7xl mx-auto sm:px-6 lg:px-8 flex flex-col sm:flex-row flex-wrap gap-4 items-center mb-6'>
         <label className='mr-3 mt-4 font-semibold'>Category: </label>
         <select
           value={selectedCategory}

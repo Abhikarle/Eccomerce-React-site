@@ -15,10 +15,12 @@ function Navbar({ search, setSearch }) {
       <div className="flex items-center justify-center min-w-20">
         <img src={SiteLogo} alt=" Site Logo" width={100} className='w-20 sm:w-24 md:w-24 h-auto object-contain'/>
       </div>
+      <div className='flex-1 flex justify-center px-4'>
       <SearchBar
         search={search}
         setSearch={setSearch}
       />
+      </div>
       <div className="flex items-center gap-6 text-sm md:text-base lg:text-lg">
         <Link to="/" className='hover:text-gray-700 transition-colors'>Home</Link>
         <Link to='/wishlist' className='relative inline-block hover:text-gray-700 transition-colors'>
