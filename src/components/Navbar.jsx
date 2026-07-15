@@ -5,7 +5,10 @@ import useWishlist  from '../hooks/useWishlist';
 import logo from '../assets/logo.svg';
 import SiteLogo from '../assets/SiteLogo.png';
 import SearchBar from "./SearchBar";
+import useAuth from "../hooks/useAuth";
+import { User } from 'lucide-react'
 function Navbar({ search, setSearch }) {
+  const { user, logout } = useAuth();
   const { cartItems } = useCart();
   const { wishlist } = useWishlist();
   const { darkMode, toggleDarkMode } = useTheme();
@@ -21,7 +24,7 @@ function Navbar({ search, setSearch }) {
         setSearch={setSearch}
       />
       </div>
-      <div className="flex items-center gap-6 text-sm md:text-base lg:text-lg">
+      <div className="flex flex-wrap justify-center sm:gap-5 items-center gap-6 text-sm md:text-base lg:text-lg">
         <Link to="/" className='hover:text-gray-700 transition-colors'>Home</Link>
         <Link to='/wishlist' className='relative inline-block hover:text-gray-700 transition-colors'>
           ❤️
@@ -42,6 +45,35 @@ function Navbar({ search, setSearch }) {
         <button onClick={() => {
           toggleDarkMode();
         }} className="hover:scale-200 transition-transform">{darkMode ? '☀️' : '🌙'}</button>
+        <div className="flex items-center gap-3">
+          {user ? (
+              <div className='flex items-center gap-4'>
+                <div className="flex items-center gap-2">
+                  <User size={30} className='text-white text-xl' />
+                    <span className="font-semibold">
+                       Hello, {user.name}
+                    </span>
+                </div>
+                <button onClick={logout} className='px-4 py-2 bg-red-500 hover:bg-red-800 text-white rounded-lg transition hover:cursor-pointer'>Logout</button>
+              </div>
+          ) : (
+            <>
+              <Link
+                to="/login"
+                className="px-4 py-2 border border-white/40 text-white rounded-lg hover:bg-white hover:text-gray-900 hover:cursor-pointer transition-all duration-300"
+              >
+                Login
+              </Link>
+
+              <Link
+                to="/register"
+                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-md hover:shadow-lg transition-all duration-300 hover:cursor-pointer px-4 py-2 rounded-lg"
+              >
+                Register
+              </Link>
+            </>
+          )}
+        </div>
       </div>
     </nav>
   );
