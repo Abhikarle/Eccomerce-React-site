@@ -1,19 +1,39 @@
 import { createContext } from "react";
-import { useState, useEffect } from "react";
+import { signOut, onAuthStateChanged } from "firebase/auth";
+import { auth } from "../firebase/firebase";
+import { useState, useEffect, useMemo } from "react";
 const AuthContext = createContext();
+
 function AuthProvider({ children }) {
-  const [user, setUser] = useState(() => {
-    return JSON.parse(localStorage.getItem("currentUser")) || null;
-  });
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-  localStorage.setItem("currentUser", JSON.stringify(user));
-  }, [user]);
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem('currentUser');
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      setUser(firebaseUser);
+      setLoading(false);
+    });
+    return unsubscribe;
+  }, []);
+  const logout = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error("Logout failed", error);
+    }
   }
+ const isAuthenticated = !!user;
+  const value = useMemo(() => ({
+  user,
+  setUser,
+  logout,
+  loading,
+  isAuthenticated,
+  }), [user, loading]);
+
+
   return (
-    <AuthContext.Provider value={{ user, setUser, logout }}>
+    <AuthContext.Provider value={ value }>
       {children}
     </AuthContext.Provider>
   )

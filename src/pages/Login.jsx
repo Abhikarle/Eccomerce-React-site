@@ -3,13 +3,18 @@ import { Link, useNavigate } from "react-router-dom";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import useToast from "../hooks/useToast";
 import useAuth from "../hooks/useAuth";
-
+import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
+import { auth } from "../firebase/firebase";
 function Login() {
   const navigate = useNavigate();
   const { showToastMessage } = useToast();
   const { setUser } = useAuth();
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
+  const firebaseLoginErrors = {
+  "auth/invalid-credential": "Invalid email or password.",
+  "auth/too-many-requests": "Too many login attempts. Please try again later.",
+  "auth/network-request-failed": "Please check your internet connection.",
+  };
   const initialFormData = {
     email: '',
     password:'',
@@ -24,7 +29,7 @@ function Login() {
     }));
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!formData.email || !formData.password) {
       showToastMessage("All fields are required", "error");
       return;
@@ -33,21 +38,59 @@ function Login() {
       showToastMessage("Please enter a valid email", "error");
       return;
     }
-    const users = JSON.parse(localStorage.getItem("users")) || [];
-    const user = users.find((existingUser) => existingUser.email === formData.email);
-    if (!user) {
-      showToastMessage("User not found", "error");
-      return;
-    }
-    if (user.password !== formData.password) {
-      showToastMessage("Incorrect password", "error");
-      return;
-    }
-    setUser(user);
-    showToastMessage("Login successful!", "success");
-    setFormData(initialFormData);
-    navigate("/");
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        formData.email,
+        formData.password
+      );
+      setUser(userCredential.user);
+      showToastMessage("Login successful!", "success");
+      setFormData(initialFormData);
+      navigate("/");
+    } catch (error) {
+      showToastMessage(firebaseLoginErrors[error.code] || "Login failed.",
+        "error");
+      }
+
   }
+  const handleForgotPassword = async () => {
+  if (!formData.email) {
+    showToastMessage("Please enter your email first.", "error");
+    return;
+  }
+
+  if (!emailRegex.test(formData.email)) {
+    showToastMessage("Please enter a valid email.", "error");
+    return;
+  }
+
+  try {
+    await sendPasswordResetEmail(auth, formData.email);
+
+    showToastMessage(
+      "Password reset email sent. Please check your inbox.",
+      "success"
+    );
+  } catch (error) {
+    switch (error.code) {
+      case "auth/user-not-found":
+        showToastMessage("No account found with this email.", "error");
+        break;
+
+      case "auth/invalid-email":
+        showToastMessage("Invalid email address.", "error");
+        break;
+
+      case "auth/network-request-failed":
+        showToastMessage("No internet connection.", "error");
+        break;
+
+      default:
+        showToastMessage("Unable to send reset email.", "error");
+    }
+  }
+};
   return (
     <div className='min-h-screen flex items-center justify-center px-4'>
       <div className='w-full max-w-md bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-xl shadow-lg p-8'>
@@ -84,7 +127,8 @@ function Login() {
           </div>
             <div className="text-right">
               <button
-                type="button"
+              type="button"
+              onClick={handleForgotPassword}
                 className="text-sm mt-3 text-blue-600 hover:underline hover:cursor-pointer"
               >
                 Forgot Password?

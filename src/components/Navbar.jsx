@@ -51,7 +51,7 @@ function Navbar({ search, setSearch }) {
                 <div className="flex items-center gap-2">
                   <User size={30} className='text-white text-xl' />
                     <span className="font-semibold">
-                       Hello, {user.name}
+                       Hello, {user.displayName}
                     </span>
                 </div>
                 <button onClick={logout} className='px-4 py-2 bg-red-500 hover:bg-red-800 text-white rounded-lg transition hover:cursor-pointer'>Logout</button>

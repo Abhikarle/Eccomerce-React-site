@@ -1,12 +1,22 @@
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import useAuth from "../hooks/useAuth";
+import { auth } from "../firebase/firebase";
 import { useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import useToast from "../hooks/useToast";
 import { User, Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { Link } from "react-router-dom";
 function Register() {
+  const { setUser } = useAuth();
   const navigate = useNavigate();
   const { showToastMessage } = useToast();
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const firebaseRegisterErrors = {
+  "auth/email-already-in-use": "This email is already registered.",
+  "auth/weak-password": "Password should be at least 6 characters.",
+  "auth/invalid-email": "Please enter a valid email address.",
+  "auth/network-request-failed": "Please check your internet connection.",
+  };
       const initialFormData = {
       name: "",
       email: "",
@@ -21,7 +31,7 @@ function Register() {
       [e.target.name]: e.target.value,
     }))
   }
-  const handleRegister = () => {
+  const handleRegister = async () => {
     if (
       !formData.name ||
       !formData.email ||
@@ -43,25 +53,23 @@ function Register() {
       showToastMessage("Passwords do not match", "error");
       return;
     }
-    const users = JSON.parse(localStorage.getItem("users")) || [];
-    const emailExists = users.some(
-     (existingUser) => existingUser.email === formData.email
-    );
-    if (emailExists) {
-      showToastMessage("Email already registered", "error");
-      return;
-    }
-    const newUser = {
-      name: formData.name,
-      email: formData.email,
-      password: formData.password,
-    };
-    users.push(newUser);
-    localStorage.setItem("users", JSON.stringify(users));
-    showToastMessage("Registration successful!", "success");
-    setFormData(initialFormData);
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
+      await updateProfile(userCredential.user, {
+        displayName: formData.name,
+      })
+      await userCredential.user.reload();
+      setUser(auth.currentUser);
+      showToastMessage("Registration successful!", "success");
+      setFormData(initialFormData);
 
-    navigate("/login");
+      navigate("/");
+    } catch (error) {
+        showToastMessage(
+          firebaseRegisterErrors[error.code] || "Registration failed.",
+          "error"
+        );
+    }
   }
   return (
     <div className='min-h-screen flex items-center justify-center px-4'>
