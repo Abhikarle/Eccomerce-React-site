@@ -10,22 +10,57 @@ The application allows users to browse products, search, manage their cart and w
 
 🔗 **Live Website:** *(https://bigbaket.netlify.app/)*
 
----
+--------------------
 
 ## 📸 Screenshots
 
 > Add screenshots of the following pages:
 
 * 🏠 Home Page
+
+![Home](./screenshots/Home.png)
+
+-----------
+
 * 📦 Product Details
+
+![Product Details](./screenshots/product-details.png)
+
+-------------
+
 * ❤️ Wishlist
+
+![Wishlist](./screenshots/Wishlist.png)
+
+--------------
+
 * 🛒 Shopping Cart
+
+![Cart](./screenshots/cart.png)
+
+--------------
+
 * 🔐 Login
+
+![Login](./screenshots/login.png)
+
+--------------
+
 * 📝 Register
+
+![Register](./screenshots/register.png)
+
+--------------
 * 💳 Checkout
+
+![Checkout](./screenshots/checkout.png)
+
+--------------
 * 🎉 Order Success
 
----
+![Order Success](./screenshots/order-success.png)
+
+--------------
 
 # ✨ Features
 
