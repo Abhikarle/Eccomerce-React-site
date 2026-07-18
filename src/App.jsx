@@ -12,6 +12,7 @@ import OrderSuccess from './pages/OrderSuccess'
 import NotFound from "./pages/NotFound";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
+import Profile from './pages/Profile'
 import ProtectedRoute from './components/ProtectedRoute'
 function App() {
   const { darkMode } = useTheme();
@@ -41,6 +42,12 @@ function App() {
         <Route path='/order-success' element={<OrderSuccess />} />
         <Route path='/register' element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/profile" element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>

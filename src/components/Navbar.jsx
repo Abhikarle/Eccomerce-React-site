@@ -48,12 +48,11 @@ function Navbar({ search, setSearch }) {
         <div className="flex items-center gap-3">
           {user ? (
               <div className='flex items-center gap-4'>
-                <div className="flex items-center gap-2">
-                  <User size={30} className='text-white text-xl' />
-                    <span className="font-semibold">
-                       Hello, {user.displayName}
-                    </span>
-                </div>
+                <Link to="/profile" className="flex items-center gap-2 font-semibold hover:text-gray-200 transition-colors"
+                >
+                <User size={30} className='text-white text-xl' />
+                <span>Hello, {user.displayName}</span>
+                </Link>
                 <button onClick={logout} className='px-4 py-2 bg-red-500 hover:bg-red-800 text-white rounded-lg transition hover:cursor-pointer'>Logout</button>
               </div>
           ) : (
