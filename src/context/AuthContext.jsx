@@ -20,6 +20,7 @@ function AuthProvider({ children }) {
       await signOut(auth);
     } catch (error) {
       console.error("Logout failed", error);
+      throw error;
     }
   }
  const isAuthenticated = !!user;
@@ -29,7 +30,7 @@ function AuthProvider({ children }) {
   logout,
   loading,
   isAuthenticated,
-  }), [user, loading]);
+  }), [user, loading, isAuthenticated]);
 
 
   return (
