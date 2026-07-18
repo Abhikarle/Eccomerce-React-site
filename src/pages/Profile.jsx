@@ -1,8 +1,7 @@
 import useAuth from '../hooks/useAuth'
 import {useState} from 'react'
-import { User, Mail, Calendar,  } from 'lucide-react'
+import { User } from 'lucide-react'
 import Loading from '../components/LoadingSpinner'
-import ProfileItem from '../components/ProfileItem'
 import { updateProfile } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import useToast from '../hooks/useToast'
@@ -48,47 +47,55 @@ const handleLogout = async () => {
     showToastMessage("Profile logout failed!", "error");
   }
 };
-  const date = new Date(user.metadata.creationTime);
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-950 px-4">
-      <div className="w-full max-w-md bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6">
-        <div className="mb-6">
-          <label className="flex items-center gap-2 font-semibold text-gray-600 dark:text-gray-300">
-            <User size={18} />
-            Name
-          </label>
+        <div className="w-full max-w-lg bg-white dark:bg-gray-900 rounded-2xl shadow-2xl p-8">
 
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="mt-2 w-full px-3 py-2 border rounded-lg bg-white dark:bg-gray-800 dark:text-white"
+  {/* Avatar Section */}
+  <div className="flex flex-col items-center mb-8">
+    <div className="w-24 h-24 rounded-full bg-blue-600 flex items-center justify-center shadow-lg">
+      <User size={50} className="text-white" />
+    </div>
+
+    <h2 className="text-2xl font-bold mt-4 dark:text-white">
+      {user.displayName || "User"}
+    </h2>
+
+    <p className="text-gray-500">
+      {user.email}
+    </p>
+  </div>
+
+  <h1 className="text-3xl font-bold mb-8 text-center dark:text-white">
+    My Profile
+  </h1>
+
+  {/* Name Input */}
+  <div className="mb-6">
+    <label className="flex items-center gap-2 font-semibold text-gray-600 dark:text-gray-300">
+      <User size={18} />
+      Name
+    </label>
+
+    <input
+      type="text"
+      value={name}
+      onChange={(e) => setName(e.target.value)}
+      className="mt-2 w-full px-3 py-2 border rounded-lg bg-white dark:bg-gray-800 dark:text-white"
           />
-        </div>
-        <ProfileItem
-          icon={<Mail size={18} />}
-          label="Email"
-        >
-          {user.email}
-        </ProfileItem>
-        <ProfileItem
-          icon={<Calendar size={18} />}
-          label="Member Since"
-        >
-          {date.toLocaleDateString("en-IN", {
-            day: "numeric",
-            month: "long",
-            year: "numeric",
-          })}
-        </ProfileItem>
-        <hr className="my-6 border-gray-300 dark:border-gray-700" />
-        <button onClick={handleSave} disabled='saving' className='bg-yellow-500 w-full hover:bg-yellow-600 text-white rounded-lg transition-all duration-300 active:scale-95 py-3'>
+          <button onClick={handleSave} disabled={saving} className='bg-blue-600 w-full hover:bg-blue-600 text-white hover:cursor-pointer mt-4 rounded-lg transition-all duration-300 active:scale-95 py-3'>
+
             {saving ? "Saving..." : "Save Changes"}
+
           </button>
-          <button onClick={handleLogout} className='bg-red-500 w-full hover:bg-red-600 text-white rounded-lg transition-all duration-300 active:scale-95 mt-5 py-3'>
+
+          <button onClick={handleLogout} className='bg-red-500 w-full hover:bg-red-600 text-white rounded-lg hover:cursor-pointer transition-all duration-300 active:scale-95 mt-5 py-3'>
+
               Logout
+
           </button>
-      </div>
+  </div>
+</div>
     </div>
   )
 }
