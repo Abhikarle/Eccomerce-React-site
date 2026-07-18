@@ -49,41 +49,39 @@ const handleLogout = async () => {
 };
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-950 px-4">
-        <div className="w-full max-w-lg bg-white dark:bg-gray-900 rounded-2xl shadow-2xl p-8">
+      <div className="w-full max-w-lg bg-white dark:bg-gray-900 rounded-2xl shadow-2xl p-8">
 
-  {/* Avatar Section */}
-  <div className="flex flex-col items-center mb-8">
-    <div className="w-24 h-24 rounded-full bg-blue-600 flex items-center justify-center shadow-lg">
-      <User size={50} className="text-white" />
-    </div>
+      {/* Avatar Section */}
+      <div className="flex flex-col items-center mb-8">
+          <div className="w-24 h-24 rounded-full bg-blue-600 dark:bg-blue-500 flex items-center justify-center shadow-lg">
+            <span className="text-4xl font-bold text-white">
+              {(user.displayName || user.email).charAt(0).toUpperCase()}
+            </span>
+          </div>
 
-    <h2 className="text-2xl font-bold mt-4 dark:text-white">
-      {user.displayName || "User"}
-    </h2>
+        <p className="text-gray-500 dark:text-gray-500">
+          {user.email}
+        </p>
+      </div>
 
-    <p className="text-gray-500">
-      {user.email}
-    </p>
-  </div>
+      <h1 className="text-3xl font-bold mb-8 text-center dark:text-white">
+        My Profile
+      </h1>
 
-  <h1 className="text-3xl font-bold mb-8 text-center dark:text-white">
-    My Profile
-  </h1>
+        {/* Name Input */}
+      <div className="mb-6">
+        <label className="flex items-center gap-2 font-semibold text-gray-600 dark:text-gray-300">
+          <User size={18} />
+          Name
+        </label>
 
-  {/* Name Input */}
-  <div className="mb-6">
-    <label className="flex items-center gap-2 font-semibold text-gray-600 dark:text-gray-300">
-      <User size={18} />
-      Name
-    </label>
-
-    <input
-      type="text"
-      value={name}
-      onChange={(e) => setName(e.target.value)}
-      className="mt-2 w-full px-3 py-2 border rounded-lg bg-white dark:bg-gray-800 dark:text-white"
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className="mt-2 w-full px-3 py-2 border rounded-xl border-gray-400 dark:border-gray-800 bg-white dark:bg-gray-800 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-600 transition"
           />
-          <button onClick={handleSave} disabled={saving} className='bg-blue-600 w-full hover:bg-blue-600 text-white hover:cursor-pointer mt-4 rounded-lg transition-all duration-300 active:scale-95 py-3'>
+          <button onClick={handleSave} disabled={saving} className='bg-blue-600 w-full hover:bg-blue-800 text-white hover:cursor-pointer disabled:bg-blue-300 disabled:cursor-not-allowed mt-4 rounded-lg transition-all duration-300 active:scale-95 py-3'>
 
             {saving ? "Saving..." : "Save Changes"}
 
@@ -94,8 +92,8 @@ const handleLogout = async () => {
               Logout
 
           </button>
-  </div>
-</div>
+        </div>
+      </div>
     </div>
   )
 }
