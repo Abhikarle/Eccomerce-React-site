@@ -103,7 +103,7 @@ function Cart() {
         </h2>
         <div className="mt-6 rounded-xl bg-gray-50 dark:bg-gray-900 p-5">
         <div className="flex justify-between mb-4">
-          <span className="text-gray-500 dark:text-gray-600">
+          <span className="text-gray-500 dark:text-gray-900">
             Total Items
           </span>
           <span className="font-bold text-lg text-white">
