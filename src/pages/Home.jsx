@@ -99,7 +99,7 @@ function Home({ search, setSearch, currentPage, setCurrentPage }) {
   ];
   return (
     <div>
-      <div className='max-w-7xl mx-auto sm:px-6 lg:px-8 flex flex-col sm:flex-row flex-wrap gap-4 items-center mb-6'>
+      <div className='max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8 flex flex-col sm:flex-row flex-wrap gap-4 items-center mb-6'>
         <label className='mr-3 mt-4 font-semibold'>Category: </label>
         <select
           value={selectedCategory}
@@ -158,7 +158,9 @@ function Home({ search, setSearch, currentPage, setCurrentPage }) {
         </div>
       </div>
       {currentProducts.length > 0 ? (
-        <ProductGrid products={currentProducts} />
+        <div className='mt-8'>
+          <ProductGrid products={currentProducts} />
+        </div>
       ) : (
           <div className='text-center py-16'>
             <SearchX className="w-20 h-20 text-slate-300 mx-auto mb-5" />
@@ -176,7 +178,7 @@ function Home({ search, setSearch, currentPage, setCurrentPage }) {
           </div>
 
       )}
-      <div className='flex flex-wrap justify-center gap-2 mt-8'>
+      <div className='flex flex-wrap justify-center gap-2 mt-10 mb-16'>
          <button className={`px-4 py-3 rounded transition ${currentPage === 1 ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-800 cursor-pointer'}`} disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>← Previous</button>
         {Array(totalPages)
           .fill()
