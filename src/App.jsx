@@ -1,19 +1,20 @@
-import { useState } from 'react'
+import { lazy, Suspense, useState } from "react";
 import { Route, Routes } from 'react-router-dom'
 import './App.css'
 import Navbar from './components/Navbar'
-import Cart from './pages/Cart'
-import Home from './pages/Home'
-import useTheme from './hooks/useTheme'
-import ProductDetails from './pages/ProductDetails'
-import Wishlist from './pages/Wishlist'
-import Checkout from './pages/Checkout'
-import OrderSuccess from './pages/OrderSuccess'
-import NotFound from "./pages/NotFound";
-import Register from "./pages/Register";
-import Login from "./pages/Login";
-import Profile from './pages/Profile'
 import Footer from "./components/Footer";
+import Loading from './components/LoadingSpinner';
+import Home from './pages/Home'
+import Cart from './pages/Cart'
+const Profile = lazy(() => import('./pages/Profile'));
+const Wishlist = lazy(() => import('./pages/Wishlist'));
+const Checkout = lazy(() => import('./pages/Checkout'));
+const Login = lazy(() => import("./pages/Login"));
+const Register = lazy(() => import ("./pages/Register"));
+const ProductDetails = lazy(() => import('./pages/ProductDetails'));
+const OrderSuccess = lazy(() => import('./pages/OrderSuccess'));
+const NotFound = lazy(() => import("./pages/NotFound"));
+import useTheme from './hooks/useTheme'
 import ProtectedRoute from './components/ProtectedRoute'
 function App() {
   const { darkMode } = useTheme();
@@ -29,6 +30,7 @@ function App() {
        >
       <Navbar search={search} setSearch={setSearch} />
       <main className='flex-1'>
+        <Suspense fallback={<Loading />}>
         <Routes>
           <Route path="/" element={<Home search={search}  currentPage={currentPage} setCurrentPage={setCurrentPage} setSearch={setSearch} />} />
           <Route path="/cart" element={<Cart />} />
@@ -52,6 +54,7 @@ function App() {
           />
           <Route path="*" element={<NotFound />} />
           </Routes>
+        </Suspense>
       </main>
       <Footer />
     </div>
